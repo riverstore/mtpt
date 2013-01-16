@@ -1,0 +1,54 @@
+img.f_reply
+{
+width:60px;
+height:28px;
+background:url(f_reply.png);
+}
+img.f_new
+{
+width:60px;
+height:28px;
+background:url(f_new.png)/* -87px 0*/;
+}
+img.f_delete
+{
+width:60px;
+height:28px;
+background:url(f_delete.png)/* 0 -25px*/;
+}
+img.f_edit
+{
+width:60px;
+height:28px;
+background:url(f_edit.png)/* -69px -25px*/;
+}
+img.f_pm
+{
+width:20px;
+height:20px;
+background:url(pm.gif)/* -131px -25px*/;
+}
+img.f_offline
+{
+width:20px;
+height:20px;
+background:url(offline.png)/* -161px -25px*/;
+}
+img.f_quote
+{
+width:60px;
+height:28px;
+background:url(f_quote.png)/* 0 -50px*/;
+}
+img.f_report
+{
+width:20px;
+height:20px;
+background:url(report.png)/* -69px -50px*/;
+}
+img.f_online
+{
+width:20px;
+height:20px;
+background:url(online.png)/* -138px -50px*/;
+}

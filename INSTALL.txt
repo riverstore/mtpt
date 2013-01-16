@@ -1,0 +1,91 @@
+MTPT INSTALLATION GUIDE
+-----------------------------------
+系统需要安装php，mysql，memcached，apache或nginx。此文档以ubuntu为例。
+server:ubuntu11.04 i386
+环境：apache+php+mysql
+-----------------------------------
+1.安装所需软件包：
+sudo apt-get install  apache2 php5 php5-gd php5-memcache php5-mysql \
+mysql-server memcached php-pear postfix
+安装imdb信息获取需要用到的php拓展
+sudo pear config-set preferred_state alpha
+sudo pear install HTTP_Request2
+
+2.将解压出来的mtpt目录拷贝到web发布目录：
+sudo tar xf mtpt-*.tar.gz && cd mtpt-*
+sudo mv mtpt/  /var/www/
+网站程序目录在/var/www/mtpt/ ,你也可以用其他目录名字替代
+
+3.修改apache配置文件：
+sudo vi /etc/apache2/sites-enabled/000-default
+配置文件内容：
+###################################################
+<IfModule dir_module>
+    DirectoryIndex index.php index.html
+</IfModule>
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot "/var/www/mtpt"
+        <Directory "/var/www/mtpt">
+                Options FollowSymLinks
+                AllowOverride None
+                Order allow,deny
+                Allow from all
+        </Directory>
+        <DirectoryMatch /\.svn/>
+                AllowOverride None
+                Order allow,deny
+                Deny from all
+        </DirectoryMatch>
+        <Directory "/var/www/mtpt/config">
+                AllowOverride None
+                Order allow,deny
+                Deny from all
+        </Directory>
+        <Directory "/var/www/mtpt/lang">
+                AllowOverride None
+                Order allow,deny
+                Deny from all
+        </Directory>
+</VirtualHost>
+#################################################
+4.修改php配置文件，确保以下配置选项为‘Off’：
+sudo vi /etc/php5/apache2/php.ini
+
+magic_quotes_gpc = Off
+magic_quotes_runtime = Off
+magic_quotes_sybase = Off
+
+5.修改mysql配置文件，增加连接数：
+sudo vi /etc/mysql/my.cnf
+
+max_connections = 1000  #可根据实际需求设置
+重启服务：
+sudo service mysql restart
+
+6.初始化mysql数据库，导入数据库文件：
+mysql -uroot -p
+mysql> create database mtpt;  #你也可以用其他数据库名字替代
+quit
+mysql -uroot -p mtpt < mtpt.sql
+
+7.修改网站主配置文件：
+sudo vi /var/www/mtpt/config/allconfig.php
+$BASIC=array(
+        'SITENAME' => 'yoursitename',
+        'BASEURL' => 'yoursiteurl',
+        'announce_url' => 'yoursiteurl/announce.php',
+        'mysql_host' => 'yourdbhostname',
+        'mysql_user' => 'yourdbusername',
+        'mysql_pass' => 'yourdbpassword',
+        'mysql_db' => 'yourdbname',
+);
+
+8.需要可写权限的目录和文件：
+cd /var/www/mtpt/
+sudo chmod 777 attachments/ bitbucket/ imdb/cache/ imdb/images/ subs/ torrents/  config/allconfig.php
+
+9.重新启动apache：
+sudo service apache2 restart
+10.浏览器打开http://127.0.0.1/即可正常访问，默认超级管理员帐号为admin,密码123456
+
