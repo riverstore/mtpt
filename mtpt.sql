@@ -2158,6 +2158,8 @@ CREATE TABLE IF NOT EXISTS `torrents` (
   `picktype` enum('hot','classic','recommended','normal') NOT NULL DEFAULT 'normal',
   `picktime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `last_reseed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `endfree` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `endsticky` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `info_hash` (`info_hash`),
   KEY `owner` (`owner`),
